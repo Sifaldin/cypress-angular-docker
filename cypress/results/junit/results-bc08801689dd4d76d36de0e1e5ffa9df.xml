@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="26.5450" tests="4" failures="1">
+  <testsuite name="Root Suite" timestamp="2021-08-30T11:59:19" tests="0" file="cypress/integration/firstTest.spec.js" time="0.0000" failures="0">
+  </testsuite>
+  <testsuite name="first tests" timestamp="2021-08-30T11:59:19" tests="4" time="26.5450" failures="1">
+    <testcase name="first tests verify correct request and response" time="18.2420" classname="verify correct request and response">
+    </testcase>
+    <testcase name="first tests should return tags" time="0.9360" classname="should return tags">
+    </testcase>
+    <testcase name="first tests should verify like funtionality" time="1.1000" classname="should verify like funtionality">
+    </testcase>
+    <testcase name="first tests should delete article from api" time="6.2670" classname="should delete article from api">
+      <failure message="Timed out retrying after 4000ms: Expected to find element: `.article-preview`, but never found it." type="AssertionError"><![CDATA[AssertionError: Timed out retrying after 4000ms: Expected to find element: `.article-preview`, but never found it.
+    at Context.eval (http://localhost:4200/__cypress/tests?p=cypress\integration\firstTest.spec.js:169:10)]]></failure>
+    </testcase>
+  </testsuite>
+</testsuites>

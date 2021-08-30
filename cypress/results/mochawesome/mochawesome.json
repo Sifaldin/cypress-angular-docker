@@ -1,0 +1,168 @@
+{
+  "stats": {
+    "suites": 1,
+    "tests": 4,
+    "passes": 3,
+    "pending": 0,
+    "failures": 1,
+    "start": "2021-08-30T11:59:19.040Z",
+    "end": "2021-08-30T12:00:59.863Z",
+    "duration": 100823,
+    "testsRegistered": 4,
+    "passPercent": 75,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "2492930f-ac71-4c1e-8989-18b16760df08",
+      "title": "",
+      "fullFile": "cypress/integration/firstTest.spec.js",
+      "file": "cypress/integration/firstTest.spec.js",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "a1d00b5a-9e96-4b90-be23-59559e0d56c2",
+          "title": "first tests",
+          "fullFile": "",
+          "file": "",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "verify correct request and response",
+              "fullTitle": "first tests verify correct request and response",
+              "timedOut": null,
+              "duration": 18242,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.intercept('POST', '**/articles').as('postArticles');\ncy.wait(500);\ncy.contains('New Article').click();\ncy.get('[formcontrolname=\"title\"]').type('Title');\ncy.get('[formcontrolname=\"description\"]').type('Description');\ncy.get('[formcontrolname=\"body\"]').type('Article body');\ncy.contains('Publish Article').click();\ncy.wait(500);\ncy.wait('@postArticles').then(({\n  request,\n  response\n}) => {\n  expect(response.statusCode).to.equal(200);\n  expect(request.body.article.body).to.equal('Article body');\n  expect(response.body.article.description).to.equal('Description');\n});",
+              "err": {},
+              "uuid": "4f7dc384-4927-4eb3-b670-10db41c4676f",
+              "parentUUID": "a1d00b5a-9e96-4b90-be23-59559e0d56c2",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should return tags",
+              "fullTitle": "first tests should return tags",
+              "timedOut": null,
+              "duration": 936,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.get('.tag-list').should('contain', 'cypress').and('contain', 'automation').and('contain', 'testing');",
+              "err": {},
+              "uuid": "1005c57b-2ef2-437e-be95-d7f1bbae4db9",
+              "parentUUID": "a1d00b5a-9e96-4b90-be23-59559e0d56c2",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should verify like funtionality",
+              "fullTitle": "first tests should verify like funtionality",
+              "timedOut": null,
+              "duration": 1100,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "cy.intercept('GET', '**/articles*', {\n  fixture: 'articles.json'\n});\ncy.intercept('GET', '**/articles/feed*', '{\"articles\":[],\"articlesCount\":0}');\ncy.contains('Global Feed').click();\ncy.get('app-article-list button').then(listOfButtons => {\n  expect(listOfButtons[0]).to.contain(1);\n  cy.wrap(listOfButtons[1]).should('contain', 10);\n}); // we do this so we  don't hit the real api instead we hit the mock\ncy.fixture('articles').then(file => {\n  const {\n    slug\n  } = file.articles[1];\n  cy.intercept('POST', `**/articles/${slug}/favorite`, file);\n});\ncy.get('app-article-list button').eq(1).click().should('contain', 11);",
+              "err": {},
+              "uuid": "05a8bd02-09ce-4765-90cd-97e91de8fcd7",
+              "parentUUID": "a1d00b5a-9e96-4b90-be23-59559e0d56c2",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "should delete article from api",
+              "fullTitle": "first tests should delete article from api",
+              "timedOut": null,
+              "duration": 7109,
+              "state": "failed",
+              "speed": null,
+              "pass": false,
+              "fail": true,
+              "pending": false,
+              "context": null,
+              "code": "const article = {\n  \"article\": {\n    \"tagList\": [],\n    \"title\": \"last request from an api Final\",\n    \"description\": \"description\",\n    \"body\": \"testing api cypress\"\n  }\n};\ncy.get('@token').then(token => {\n  cy.request({\n    url: 'https://conduit.productionready.io/api/articles/',\n    headers: {\n      'Authorization': `Token ${token}`\n    },\n    method: 'POST',\n    body: article\n  }).then(res => {\n    expect(res.status).to.equal(200);\n  });\n  cy.contains('Global Feed').click();\n  cy.wait(500);\n  cy.get('.article-preview').first().click();\n  cy.get('.article-actions').contains('Delete Article').click();\n  cy.request({\n    url: 'https://conduit.productionready.io/api/articles?limit=10&offset=0',\n    headers: {\n      'Authorization': `Token ${token}`\n    },\n    method: 'GET'\n  }).its('body').then(body => {\n    expect(body.articles[0].title).not.to.eq(\"last request from an api Final\");\n  });\n});",
+              "err": {
+                "message": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.article-preview`, but never found it.",
+                "estack": "AssertionError: Timed out retrying after 4000ms: Expected to find element: `.article-preview`, but never found it.\n    at Context.eval (http://localhost:4200/__cypress/tests?p=cypress\\integration\\firstTest.spec.js:169:10)",
+                "diff": null
+              },
+              "uuid": "3762c929-a97d-4c9b-b39d-9a33e0e76e65",
+              "parentUUID": "a1d00b5a-9e96-4b90-be23-59559e0d56c2",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "4f7dc384-4927-4eb3-b670-10db41c4676f",
+            "1005c57b-2ef2-437e-be95-d7f1bbae4db9",
+            "05a8bd02-09ce-4765-90cd-97e91de8fcd7"
+          ],
+          "failures": [
+            "3762c929-a97d-4c9b-b39d-9a33e0e76e65"
+          ],
+          "pending": [],
+          "skipped": [],
+          "duration": 27387,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 2000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 2000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "7.0.1"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "mochawesome",
+        "saveHtml": false,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "6.2.2"
+    },
+    "marge": {
+      "options": {
+        "id": "default",
+        "reportDir": "cypress/results/mochawesome",
+        "overwrite": false,
+        "html": false,
+        "json": true
+      },
+      "version": "5.2.0"
+    }
+  }
+}

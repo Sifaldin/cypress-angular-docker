@@ -1,0 +1,10 @@
+version: "3.7"
+services: 
+    cypress_e2e:
+        image: cypress_angular
+        build: 
+            context: .
+            dockerfile: ./Dockerfile
+        volumes: 
+            - ./dockerReports/:/app/cypress/results
+            - ./dockerReports/:/app/mochawesome-report
