@@ -7,3 +7,6 @@
 **General functionality:**
 
 ### Testing automation with cypress inlcuding most advanced features such as headless reporting, retries, API testing, cypress with Docker, cross browser testing and cypress dashboard
+
+# For training purposes and future reference only.
+
